@@ -1,0 +1,16 @@
+#lang racket
+(define (readTableau fileIn)  
+  (let ((sL (map (lambda s (string-split (car s))) (file->lines fileIn))))
+    (map (lambda (L)
+           (map (lambda (s)
+                  (if (eqv? (string->number s) #f)
+                      s
+                      (string->number s))) L)) sL)))
+    
+
+(define (writeTableau tb fileOut)
+  (if (eqv? tb '())
+      #t
+      (begin (display-lines-to-file (car tb) fileOut #:separator #\space #:exists 'append)
+             (display-to-file #\newline fileOut #:exists 'append)
+             (writeTableau (cdr tb) fileOut))))
